@@ -1,6 +1,9 @@
 # MCCP
 A try for the ERC808 protocol for ethereum
 
+THIS PROJECT has been developed during ETNA Codecamp and is a student work.
+It is not an official implementation of the Booking Token Unit protocol and does not claim to be compliant with ERC-808
+
 ## Before working
 
 this is a simple truffle webpack project launch with : `truffle unbox webpack`

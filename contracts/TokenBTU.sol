@@ -1,4 +1,4 @@
-pragma solidity ^0.4.16;
+pragma solidity ^0.4.2;
 
 interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) public; }
 
@@ -29,7 +29,8 @@ contract TokenBTU {
         uint256 initialSupply,
         string tokenName,
         string tokenSymbol
-    ) public {
+    ) public 
+    {
         totalSupply = initialSupply * 10 ** uint256(decimals);  // Update total supply with the decimal amount
         balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
         name = tokenName;                                   // Set the name for display purposes
@@ -94,7 +95,8 @@ contract TokenBTU {
      * @param _value the max amount they can spend
      */
     function approve(address _spender, uint256 _value) public
-        returns (bool success) {
+        returns (bool success) 
+    {
         allowance[msg.sender][_spender] = _value;
         return true;
     }
@@ -110,7 +112,8 @@ contract TokenBTU {
      */
     function approveAndCall(address _spender, uint256 _value, bytes _extraData)
         public
-        returns (bool success) {
+        returns (bool success) 
+    {
         tokenRecipient spender = tokenRecipient(_spender);
         if (approve(_spender, _value)) {
             spender.receiveApproval(msg.sender, _value, this, _extraData);

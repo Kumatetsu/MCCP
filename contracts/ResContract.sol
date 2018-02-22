@@ -7,23 +7,23 @@ contract ResContract {
     struct Availability {
         address                 _provider;  // address of the provider
         address                 _booker;    // address of the booker
-	    uint                    _resourceId ;   // resource id OR bundle id
-	    uint                    _type;   // Type of Availability
-	    uint                    _minDeposit ; // minimum BTU deposit for booking this resource
-	    uint                    _commission ; // commission amount paid to booker in BTU
+        uint                    _resourceId ;   // resource id OR bundle id
+        uint                    _type;   // Type of Availability
+        uint                    _minDeposit ; // minimum BTU deposit for booking this resource
+        uint                    _commission ; // commission amount paid to booker in BTU
         uint                    _freeCancelDateTs; // Limit date for a reservation cancellation
         uint                    _startDateTs;   //availability start date timestamps
         uint                    _endDateTs;   //availability end date timestamps
-	    BookingStatus           _bookingStatus ; // reservation status
+        BookingStatus           _bookingStatus ; // reservation status
     }
 
     uint public availabilityCount;
     mapping (uint => Availability) public availabilities;
 
     //Submit one or multiple availability - production implementation should be off-chain
-    function publishAvailability ( uint _type, uint _minDeposit,
-                                   uint _commission, uint _freeCancelDateTs, uint _startDateTs, uint _endDateTs,
-                                   BookingStatus _bookingStatus)
+    function publishAvailability ( uint _type, uint _minDeposit, uint _commission, 
+                                   uint _freeCancelDateTs, uint _startDateTs, 
+                                   uint _endDateTs, BookingStatus _bookingStatus)
     public returns (BookingStatus status) 
     {
         availabilities[availabilityCount] = Availability( msg.sender, 0x0, availabilityCount, _type, _minDeposit,
@@ -41,8 +41,8 @@ contract ResContract {
         uint[] memory              keys = new uint[](availabilityCount);
         address[] memory           providers = new address[](availabilityCount);
         address[] memory           bookers = new address[](availabilityCount);
-	    uint[] memory              resourceIds = new uint[](availabilityCount);
-	    uint[] memory              types = new uint[](availabilityCount);
+        uint[] memory              resourceIds = new uint[](availabilityCount);
+        uint[] memory              types = new uint[](availabilityCount);
         uint[] memory              startDateTs = new uint[](availabilityCount);
         uint[] memory              endDateTs = new uint[](availabilityCount);
         BookingStatus[] memory     bookingStatuses = new BookingStatus[](availabilityCount);
@@ -67,7 +67,7 @@ contract ResContract {
                              uint, BookingStatus)
     {
         uint             minDeposit;
-	    uint             commission;
+        uint             commission;
         uint             freeCancelDateTs;
         BookingStatus    bookingStatus;
 
@@ -75,7 +75,8 @@ contract ResContract {
         commission = availabilities[availabilityNumber]._commission;
         freeCancelDateTs = availabilities[availabilityNumber]._freeCancelDateTs;
         bookingStatus = availabilities[availabilityNumber]._bookingStatus;
-        return (availabilityNumber, minDeposit, commission, freeCancelDateTs, bookingStatus);
+        return (availabilityNumber, minDeposit, commission, 
+                freeCancelDateTs, bookingStatus);
     }
 
     //Request reservation
@@ -83,6 +84,7 @@ contract ResContract {
     public returns (BookingStatus)
     {
         availabilities[availabilityNumber]._bookingStatus = BookingStatus.REQUESTED;
+        availabilities[availabilityNumber]._booker = msg.sender;
         return (availabilities[availabilityNumber]._bookingStatus);
     }
 }

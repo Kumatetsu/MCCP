@@ -83,6 +83,10 @@ contract ResContract {
     }
 
     //Request reservation
+    /* TO-ADD
+     * BTU Logic :
+     * BTU escrows deposit amount
+     */
     function requestAvailability (uint availabilityNumber)
     public returns (BookingStatus)
     {
@@ -94,6 +98,10 @@ contract ResContract {
     }
 
     //reject reservation
+    /* TO-ADD
+     * BTU Logic :
+     * BTU gives deposit amount back to booker
+     */
     function rejectAvailability (uint availabilityNumber)
     public returns (BookingStatus)
     {
@@ -104,6 +112,10 @@ contract ResContract {
     }
 
     //confirm reservation
+    /* TO-ADD
+     * BTU Logic :
+     * BTU escrows deposit amount 
+     */
     function confirmAvailability (uint availabilityNumber)
     public returns (BookingStatus)
     {
@@ -114,6 +126,11 @@ contract ResContract {
     }
 
     //cancel reservation
+    /* TO-ADD
+     * BTU Logic :
+     * IF BEFORE CANCEL DATE : BTU gives back deposit amount to booker
+     * IF AFTER CANCEL DATE : BTU gives back deposit amount to provider
+     */
     function cancelAvailability (uint availabilityNumber)
     public returns (BookingStatus)
     {

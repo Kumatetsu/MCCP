@@ -3,7 +3,7 @@ pragma solidity ^0.4.2;
 /* Availabilities implementation */
 contract ResContract {
     
-    enum BookingStatus { REQUESTED, REJECTED, CONFIRMED, CANCELLED  }
+    enum BookingStatus { AVAILABLE, REQUESTED, REJECTED, CONFIRMED, CANCELLED  }
     struct Availability {
         address                 _provider;  // address of the provider
         address                 _booker;    // address of the booker
@@ -83,11 +83,63 @@ contract ResContract {
     }
 
     //Request reservation
-    function requestReservation (uint availabilityNumber)
+    function requestAvailability (uint availabilityNumber)
     public returns (BookingStatus)
     {
-        availabilities[availabilityNumber]._bookingStatus = BookingStatus.REQUESTED;
-        availabilities[availabilityNumber]._booker = msg.sender;
+        if (availabilities[availabilityNumber]._bookingStatus == BookingStatus.AVAILABLE) {
+            availabilities[availabilityNumber]._bookingStatus = BookingStatus.REQUESTED;
+            availabilities[availabilityNumber]._booker = msg.sender;
+        }
         return (availabilities[availabilityNumber]._bookingStatus);
+    }
+
+    //reject reservation
+    function rejectAvailability (uint availabilityNumber)
+    public returns (BookingStatus)
+    {
+        if (availabilities[availabilityNumber]._provider == msg.sender) {
+            availabilities[availabilityNumber]._bookingStatus = BookingStatus.REJECTED;
+        }
+        return (availabilities[availabilityNumber]._bookingStatus);
+    }
+
+    //confirm reservation
+    function confirmAvailability (uint availabilityNumber)
+    public returns (BookingStatus)
+    {
+        if (availabilities[availabilityNumber]._provider == msg.sender) {
+            availabilities[availabilityNumber]._bookingStatus = BookingStatus.CONFIRMED;
+        }
+        return (availabilities[availabilityNumber]._bookingStatus);
+    }
+
+    //cancel reservation
+    function cancelAvailability (uint availabilityNumber)
+    public returns (BookingStatus)
+    {
+        if (availabilities[availabilityNumber]._provider == msg.sender) {
+            availabilities[availabilityNumber]._bookingStatus = BookingStatus.CANCELLED;
+        }
+        return (availabilities[availabilityNumber]._bookingStatus);
+    }
+
+    //Update reservation
+    function updateAvailability ( uint availabilityNumber, uint _type, uint _minDeposit, uint _commission, 
+                                 uint _freeCancelDateTs, uint _startDateTs, 
+                                 uint _endDateTs, BookingStatus _bookingStatus, bytes32 _metaDataLink)
+    public returns (bool status) 
+    {
+        if (availabilities[availabilityNumber]._provider == msg.sender) {
+            availabilities[availabilityNumber]._type = _type;
+            availabilities[availabilityNumber]._minDeposit = _minDeposit;
+            availabilities[availabilityNumber]._commission = _commission;
+            availabilities[availabilityNumber]._freeCancelDateTs = _freeCancelDateTs;
+            availabilities[availabilityNumber]._startDateTs = _startDateTs;
+            availabilities[availabilityNumber]._endDateTs = _endDateTs;
+            availabilities[availabilityNumber]._bookingStatus = _bookingStatus;
+            availabilities[availabilityNumber]._metaDataLink = _metaDataLink;
+            return true;
+        }
+        return false;
     }
 }

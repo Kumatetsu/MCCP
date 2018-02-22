@@ -15,20 +15,21 @@ contract ResContract {
         uint                    _startDateTs;   //availability start date timestamps
         uint                    _endDateTs;   //availability end date timestamps
         BookingStatus           _bookingStatus ; // reservation status
+        bytes32                  _metaDataLink; //metadatas
     }
 
     uint public availabilityCount;
     mapping (uint => Availability) public availabilities;
 
-    //Submit one or multiple availability - production implementation should be off-chain
+    //Submit one availability
     function publishAvailability ( uint _type, uint _minDeposit, uint _commission, 
                                    uint _freeCancelDateTs, uint _startDateTs, 
-                                   uint _endDateTs, BookingStatus _bookingStatus)
+                                   uint _endDateTs, BookingStatus _bookingStatus, bytes32 _metaDataLink)
     public returns (BookingStatus status) 
     {
         availabilities[availabilityCount] = Availability( msg.sender, 0x0, availabilityCount, _type, _minDeposit,
                                                           _commission, _freeCancelDateTs, _startDateTs, _endDateTs,
-                                                          _bookingStatus);
+                                                          _bookingStatus, _metaDataLink);
         availabilityCount++;
         return _bookingStatus;
     }
@@ -64,19 +65,21 @@ contract ResContract {
     //All details from one availability
     function listAvailabilityDetails (uint availabilityNumber)
     public constant returns (uint, uint, uint,
-                             uint, BookingStatus)
+                             uint, BookingStatus, bytes32)
     {
         uint             minDeposit;
         uint             commission;
         uint             freeCancelDateTs;
         BookingStatus    bookingStatus;
+        bytes32          metaDataLink;
 
         minDeposit = availabilities[availabilityNumber]._minDeposit;
         commission = availabilities[availabilityNumber]._commission;
         freeCancelDateTs = availabilities[availabilityNumber]._freeCancelDateTs;
         bookingStatus = availabilities[availabilityNumber]._bookingStatus;
+        metaDataLink = availabilities[availabilityNumber]._metaDataLink;
         return (availabilityNumber, minDeposit, commission, 
-                freeCancelDateTs, bookingStatus);
+                freeCancelDateTs, bookingStatus, metaDataLink);
     }
 
     //Request reservation

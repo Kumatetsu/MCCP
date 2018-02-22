@@ -4,6 +4,7 @@ interface tokenRecipient { function receiveApproval(address _from, uint256 _valu
 
 contract TokenBTU {
     // Public variables of the token
+    address public owner;
     string public name;
     string public symbol;
     uint8 public decimals = 18;
@@ -31,6 +32,7 @@ contract TokenBTU {
         string tokenSymbol
     ) public 
     {
+        owner = msg.sender;
         totalSupply = initialSupply * 10 ** uint256(decimals);  // Update total supply with the decimal amount
         balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
         name = tokenName;                                   // Set the name for display purposes
@@ -152,5 +154,13 @@ contract TokenBTU {
         totalSupply -= _value;                              // Update totalSupply
         Burn(_from, _value);
         return true;
+    }
+
+    function buyBTU(uint256 amount) public {
+        _transfer(owner, msg.sender, amount);
+    }
+
+    function getMyAddressBalance() public constant returns (uint balance) {
+        return balanceOf[msg.sender];
     }
 }

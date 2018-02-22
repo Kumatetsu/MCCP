@@ -1,8 +1,15 @@
 pragma solidity ^0.4.2;
 
+import "./TokenBTU.sol";
+
 /* Availabilities implementation */
 contract ResContract {
     
+    address                                 owner;
+    TokenBTU                                BTU;
+    uint public                             availabilityCount;
+    mapping (uint => Availability) public   availabilities;
+
     enum BookingStatus { AVAILABLE, REQUESTED, REJECTED, CONFIRMED, CANCELLED }
     struct Availability {
         address                 _provider;  // address of the provider
@@ -18,8 +25,9 @@ contract ResContract {
         bytes32                 _metaDataLink; //metadatas
     }
 
-    uint public availabilityCount;
-    mapping (uint => Availability) public availabilities;
+    function ResContract() public {
+        BTU = new TokenBTU(12000000000000000000, "TokenBTU", "BTU");
+    }
 
     //Submit one availability
     function publishAvailability (uint _type, uint _minDeposit, uint _commission, 

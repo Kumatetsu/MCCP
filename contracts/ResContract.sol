@@ -154,7 +154,11 @@ contract ResContract {
     public returns (BookingStatus)
     {
         if (availabilities[availabilityNumber]._provider == msg.sender) {
-            BTU.escrowResolveDispute(availabilityNumber);
+            if (availabilities[availabilityNumber]._freeCancelDateTs > now) {
+                BTU.escrowResolveDispute(availabilityNumber);
+            } else {
+                BTU.escrowBackToAccount(availabilityNumber, availabilities[availabilityNumber]._booker);
+            }
             availabilities[availabilityNumber]._bookingStatus = BookingStatus.CANCELLED;
         }
         return (availabilities[availabilityNumber]._bookingStatus);

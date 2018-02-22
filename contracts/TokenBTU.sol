@@ -175,10 +175,7 @@ contract TokenBTU {
         if (balanceOf[booker] < amount) {
             return false;
         }
-        reservations[availabilityId].booker = booker;
-        reservations[availabilityId].provider = provider;
-        reservations[availabilityId].amount = amount;
-        reservations[availabilityId].commission = commission;
+        reservations[availabilityId] = Reservation(provider, booker, amount, commission);
         balanceOf[booker] -= amount;
         return true;
     }

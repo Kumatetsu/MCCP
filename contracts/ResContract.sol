@@ -15,7 +15,7 @@ contract ResContract {
         uint                    _startDateTs;   //availability start date timestamps
         uint                    _endDateTs;   //availability end date timestamps
         BookingStatus           _bookingStatus ; // reservation status
-        bytes32                  _metaDataLink; //metadatas
+        bytes32                 _metaDataLink; //metadatas
     }
 
     uint public availabilityCount;

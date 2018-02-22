@@ -7,6 +7,6 @@ module.exports = function(deployer) {
   deployer.deploy(ConvertLib);
   deployer.link(ConvertLib, MetaCoin, TokenBTU, ResContract);
   deployer.deploy(MetaCoin);
-  deployer.deploy(TokenBTU, 12000000000000000000, "TokenBTU", "BTU");
   deployer.deploy(ResContract);
+  deployer.deploy(TokenBTU, 12000000000000000000, "TokenBTU", "BTU");
 };

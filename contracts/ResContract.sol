@@ -25,8 +25,8 @@ contract ResContract {
         bytes32                 _metaDataLink; //metadatas
     }
 
-    function ResContract() public {
-        BTU = new TokenBTU(12000000000000000000, "TokenBTU", "BTU");
+    function ResContract(address contractAddress) public {
+        BTU = TokenBTU(contractAddress);
     }
 
     //Submit one availability

@@ -194,4 +194,19 @@ contract TokenBTU {
         reservations[availabilityId].amount = 0;
         return true;
     }
+
+    function listReservationsDetails (uint availabilityNumber)
+    public constant returns (address, address, uint, uint)
+    {
+        address                 provider;
+        address                 booker;
+        uint                    amount;
+        uint                    commission;
+
+        provider = reservations[availabilityNumber].provider;
+        booker = reservations[availabilityNumber].booker;
+        amount = reservations[availabilityNumber].amount;
+        commission = reservations[availabilityNumber].commission;
+        return (provider, booker, amount, commission);
+    }
 }
